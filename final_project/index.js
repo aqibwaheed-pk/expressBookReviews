@@ -3,8 +3,20 @@ const jwt = require('jsonwebtoken');
 const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
+const sessions = {}; // simple in-memory session store
+
 
 const app = express();
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        sessions[username] = true;
+        return res.json({message: "Login successful!"});
+    }
+    return res.status(401).json({message: "Invalid credentials"});
+});
 
 app.use(express.json());
 
