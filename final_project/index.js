@@ -8,6 +8,8 @@ const sessions = {}; // simple in-memory session store
 
 const app = express();
 
+app.use(express.json());
+
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     const user = users.find(u => u.username === username && u.password === password);
@@ -17,8 +19,6 @@ app.post('/login', (req, res) => {
     }
     return res.status(401).json({message: "Invalid credentials"});
 });
-
-app.use(express.json());
 
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
